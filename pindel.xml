@@ -2,7 +2,7 @@
     <description></description>
 
     <requirements>
-        <container type="docker">pindel:0.2.5b1</container>
+        <container type="docker">pindel:0.2.5b4</container>
     </requirements>
 
     <command interpreter="python">
@@ -18,10 +18,15 @@
         -s $s.defineInsertSize.insertSize
 #end if
 #end for
-        -o1 $outputRawFile
-        -o2 $outputVcfFile
 
-        --number_of_procs \${GALAXY_SLOTS:-4}
+-o1 $outputRawFile
+-o2 $outputVcfFile
+-o3 $outputSomaticVcfFile
+
+--number_of_procs \${GALAXY_SLOTS:-4}
+        
+--window_size ${window_size}
+        
         <!-- Parameters affecting which structural variants are reported -->
         #if str($options_which.options_which_selector) == "yes":
             #if $options_which.reportInversions:
@@ -120,21 +125,7 @@
         <!-- optional -->
 
         <!-- Parameters affecting runtime and memory usage -->
-        <conditional name="options_runtime">
-            <param name="options_runtime_selector" type="select" label="Display paramters affecting runtime and memory usage">
-                <option value="yes" selected="True">yes</option>
-                <option value="no">no</option>
-            </param>
-            <when value="yes">
-                <!-- param name="number_of_procs" type="integer" label="Number of Procs" help="Number of chrome processes" value="4" / -->
-                <!-- param name="number_of_threads" type="integer" label="Number of threads" help="the number of threads Pindel will use" value="1" / -->
-                <param name="window_size" type="integer" value="5" label="Window size" help="for saving RAM, divides the reference in bins of X million bases and only analyzes the reads that belong in the current bin, (default=5 million)" />
-            </when>
-            <when value="no">
-                <!-- Do nothing here -->
-            </when>
-        </conditional>
-
+        <param name="window_size" type="integer" value="5" label="Window size" help="for saving RAM, divides the reference in bins of X million bases and only analyzes the reads that belong in the current bin, (default=5 million)" />
 
         <!-- Parameters affecting which structural variants are reported -->
         <conditional name="options_which">
@@ -250,8 +241,9 @@
     </inputs>
 
     <outputs>
-        <data format="tabular" name="outputRawFile" />
-        <data format="vcf" name="outputVcfFile" />
+        <data format="tabular" name="outputRawFile" label="pindel.raw"/>
+        <data format="vcf" name="outputVcfFile" label="pindel.vcf"/>
+        <data format="vcf" name="outputSomaticVcfFile" label="pindel.somatic.vcf"/>
     </outputs>
 
     <stdio>
