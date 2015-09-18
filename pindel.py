@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+#
+# Base on code from https://testtoolshed.g2.bx.psu.edu/view/jeremie/pindel_test
+#
+
 import logging
 import argparse, os, shutil, subprocess, sys, tempfile, time, shlex, re
 import datetime
@@ -121,9 +125,10 @@ def move(avant, apres):
         execute("mv %s %s" %(avant, apres))
 
 
-def pindel2vcf(inputFastaFile, refName, pindel_file, vcf_file):
+def pindel2vcf(inputFastaFile, refName, pindel_file, vcf_file, center="DEFAULT"):
     date = str(time.strftime('%d/%m/%y',time.localtime()))
-    cmd = "pindel2vcf -p %s -r %s -R %s -d %s -v %s" % (pindel_file, inputFastaFile, refName, date, vcf_file)
+    #cmd = "pindel2vcf -p %s -r %s -R %s -d %s -v %s" % (pindel_file, inputFastaFile, refName, date, vcf_file)
+    cmd = "pindel2vcf -p %s -r %s -R %s -d %s -v %s -C %s" % (pindel_file, inputFastaFile, refName, date, vcf_file, center)
     return cmd
 
 
