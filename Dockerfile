@@ -13,6 +13,6 @@ RUN     tar xvjf samtools-1.2.tar.bz2
 RUN     cd /opt/samtools-1.2 && make && make install
 
 RUN     git clone https://github.com/genome/pindel.git
-RUN     cd pindel && git checkout v0.2.5b5 
+RUN     cd pindel && git checkout v0.2.5b6 
 RUN     cd pindel && ./INSTALL /opt/samtools-1.2/htslib-1.2.1
 RUN     cp /opt/pindel/pindel* /usr/local/bin/
