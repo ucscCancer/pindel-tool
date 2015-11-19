@@ -1,0 +1,179 @@
+
+class: CommandLineTool
+label: Pindel-Somatic
+baseCommand: [python, /opt/pindel.py, -t, NORMAL, -t TUMOR]
+requirements:
+  - class: "DockerRequirement"
+    dockerImageId: "pindel:0.2.5b6"
+
+inputs:
+  - id: "#normal"
+    type: File
+    inputBinding:
+      prefix: -b
+  - id: "#tumor"
+    type: File
+    inputBinding:
+      prefix: -b
+
+  - id: "#reference"
+    type: File
+    inputBinding:
+      prefix: -r
+
+  - id: "#referenceName"
+    type: string
+    inputBinding:
+      prefix: -R
+
+  - id: "#windowSize"
+    type: integer
+    default: 2
+    inputBinding:
+      prefix: --window_size
+
+  - id: "#procs"
+    type: integer
+    default: 2
+    inputBinding:
+      prefix: --number_of_procs
+
+  - id: "#normal_insert_size"
+    type: [null, integer]
+    inputBinding:
+      prefix: -s
+  - id: "#tumor_insert_size"
+    type: [null, integer]
+    inputBinding:
+      prefix: -s
+
+  - id: "#report_inversions"
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: --report_inversions
+
+  - id: "#report_duplications"
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: --report_duplications
+
+  - id: "#report_long_insertions"
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: --report_long_insertions
+
+  - id: "#report_breakpoints"
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: --report_breakpoints
+
+  - id: "#report_only_close_mapped_reads"
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: -S
+
+  - id: "#outputRawFile"
+    type: string
+    default: pindel.raw
+    inputBinding:
+      prefix: -o
+  
+  - id: "#outputVcfFile"
+    type: string
+    default: pindel.vcf
+    inputBinding:
+      prefix: -o2
+  
+  - id: "#outputSomaticVcfFile"
+    type: string
+    default: pindel_somatic.vcf
+    inputBinding:
+      prefix: -o3
+  
+  - id: "somatic_vaf"
+    type: float
+    inputBinding:
+      prefix: --somatic_vaf
+
+  - id: "somatic_cov"
+    type: float
+    inputBinding:
+      prefix: --somatic_cov
+
+  - id: "somatic_hom"
+    type: float
+    inputBinding:
+      prefix: --somatic_hom
+
+  - id: "min_inversion_size"
+    type: integer
+    inputBinding:
+      prefix: --min_inversion_size
+
+  - id: min_num_matched_bases
+    type: integer
+    inputBinding:
+      prefix: -d
+
+  - id: max_range_index
+    type: integer
+    inputBinding:
+      prefix: -x
+
+  - id: additional_mismatch
+    type: integer
+    inputBinding:
+      prefix: -a
+  
+  - id: min_perfect_match_around_BP
+    type: integer
+    inputBinding:
+      prefix: -m
+  
+  - id: sequencing_error_rate
+    type: float
+    inputBinding:
+      prefix: --sequencing_error_rate
+
+  - id: maximum_allowed_mismatch_rate
+    type: float
+    inputBinding:
+      prefix: -u
+  
+  - id: sensitivity
+    type: float
+    inputBinding: --sensitivity
+
+  
+outputs:
+  - id: "#mutations"
+    type: File
+    outputBinding:
+      glob: muse.vcf
+
+  - id: "rawFile"
+    type: File
+    outputBinding:
+      glob:
+        engine: "cwl:JsonPointer"
+        script: job/outputRawFile
+
+  - id: "vcfFile"
+    type: File
+    outputBinding:
+      glob:
+        engine: "cwl:JsonPointer"
+        script: job/outputVcfFile
+
+  - id: "somaticVcfFile"
+    type: File
+    outputBinding:
+      glob:
+        engine: "cwl:JsonPointer"
+        script: job/outputSomaticVcfFile
+        
