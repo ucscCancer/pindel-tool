@@ -4,7 +4,7 @@ label: Pindel-Somatic
 baseCommand: [python, /opt/pindel.py, -t, NORMAL, -t TUMOR]
 requirements:
   - class: "DockerRequirement"
-    dockerImageId: "pindel:0.2.5b6"
+    dockerImageId: "pindel:0.2.5b8"
 
 inputs:
   - id: "#normal"
