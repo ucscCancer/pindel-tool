@@ -23,6 +23,7 @@ inputs:
 
   - id: "#referenceName"
     type: string
+    default: HG19
     inputBinding:
       prefix: -R
 
